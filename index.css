@@ -1,0 +1,30 @@
+.body {
+    background-image: url("recycle.jpg");
+    background-size: cover;
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(275, 275, 275, 0.7);
+    z-index: 0;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 400px;
+    width: 90%;
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px var(--shadow-light);
+    text-align: center;
+
+}
