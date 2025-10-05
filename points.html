@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Points Tracker</title>
+    <link rel="stylesheet" href="stylezz.css">
+    <script type="module" src="points3.js" defer></script>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="points.html">Points</a>
+    </nav>
+    <h2>Welcome to your Points Dashboard</h2>
+    <p>Your total points: <span id="pointsDisplay">Loading...</span></p>
+
+    <header>
+        <h1>Your Points</h1>
+    </header>
+
+    <h2>Your Points</h2>
+    <p>Total points: <strong><span id="pointsDisplay">Loading...</span></strong></p>
+
+    <div id="pointsContainer">
+        <h2 id="pointsDisplay">Your Points: 0</h2>
+
+        <div>
+            <h3>Use Points for Yourself</h3>
+            <input type="number" id="spendAmount" placeholder="Enter points to spend">
+            <button id="spendBtn">Spend Points</button>
+        </div>
+
+        <div>
+            <h3>Donate Points</h3>
+            <select id="charitySelect">
+                <option value="">Select a charity</option>
+                <option value="Hope Worldwide Philippines">Hope Worldwide Philippines</option>
+                <option value="Angat Buhay Foundation">Angat Buhay Foundation</option>
+                <option value="AGrEA Foundation">AGrEA Foundation</option>
+
+            </select>
+            <input type="number" id="donateAmount" placeholder="Points to donate">
+            <button id="donateBtn">Donate Points</button>
+        </div>
+    </div>
+</body>
+
+</html>
