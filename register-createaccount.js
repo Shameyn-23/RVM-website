@@ -35,9 +35,9 @@ submit.addEventListener("click", function (event) {
 
             // ✅ Redirect to points with QR if exists
             if (qrCode) {
-                window.location.href = `points3.html?code=${qrCode}`;
+                window.location.href = `points.html?code=${qrCode}`;
             } else {
-                window.location.href = "points3.html";
+                window.location.href = "points.html";
             }
         })
         .catch((error) => {

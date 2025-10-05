@@ -1,0 +1,109 @@
+:root {
+    --primary-green: #4CAF50;
+    --secondary-green: #81C784;
+    --accent-blue: #4BA3C3;
+    --soft-cream: #F5F9F1;
+    --text-dark: #2E3D2F;
+    --text-light: #ffffff;
+    --card-bg: #ffffff;
+    --border-radius: 10px;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --transition-speed: 0.3s;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica, monospace;
+}
+
+/* Body */
+body {
+    background: var(--soft-cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Headings */
+h1,
+h2,
+h3 {
+    color: var(--primary-green);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Container */
+.container {
+    max-width: 400px;
+    width: 90%;
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px var(--shadow-light);
+    text-align: center;
+
+}
+
+/* Inputs */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 1rem 0;
+    border-radius: var(--border-radius);
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+input:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 4px 6px var(--shadow-light);
+}
+
+
+button,
+.btn {
+    background: var(--primary-green);
+    color: var(--text-light);
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+    margin-top: 1rem;
+    width: 100%;
+}
+
+button:hover,
+.btn:hover {
+    background: var(--secondary-green);
+    transform: translateY(-2px);
+}
+
+a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--primary-green);
+    text-decoration: underline;
+}
+
+.points-box {
+    padding: 1rem;
+    background: #eef7ec;
+    border-radius: var(--border-radius);
+    text-align: center;
+    margin-top: 1rem;
+}

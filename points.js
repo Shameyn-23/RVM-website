@@ -29,6 +29,7 @@ function getCodeFromURL() {
     return params.get("code");
 }
 
+// ✅ Display points
 async function displayUserPoints(uid) {
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
@@ -45,14 +46,16 @@ async function addPointsFromCode(user) {
     const userSnap = await getDoc(userRef);
 
     if (userSnap.exists()) {
-        await updateDoc(userRef, {
-            points: increment(pointsToAdd)
-        });
+        await updateDoc(userRef, { points: increment(pointsToAdd) });
     } else {
         await setDoc(userRef, { points: pointsToAdd });
     }
 
+    // ✅ Ensure the display updates
     displayUserPoints(user.uid);
+
+    // ✅ Clear the code so it doesn't keep adding points on reload
+    window.history.replaceState({}, document.title, "points.html");
 }
 
 document.getElementById("spendBtn").addEventListener("click", async () => {
@@ -65,13 +68,10 @@ document.getElementById("spendBtn").addEventListener("click", async () => {
 
     if (userSnap.exists()) {
         const currentPoints = userSnap.data().points || 0;
-
         if (spendPoints > currentPoints) {
             alert("You don't have enough points!");
         } else {
-            await updateDoc(userRef, {
-                points: increment(-spendPoints)
-            });
+            await updateDoc(userRef, { points: increment(-spendPoints) });
             alert(`You used ${spendPoints} points for yourself!`);
             displayUserPoints(user.uid);
         }
@@ -91,7 +91,6 @@ document.getElementById("donateBtn").addEventListener("click", async () => {
 
     if (userSnap.exists()) {
         const currentPoints = userSnap.data().points || 0;
-
         if (donatePoints > currentPoints) {
             alert("You don't have enough points!");
         } else {
