@@ -1,8 +1,23 @@
 // Confirmation popup
 function showConfirm(message) {
     return new Promise((resolve) => {
-        const confirmed = window.confirm(message); // Simple browser confirm
-        resolve(confirmed);
+        const modal = document.getElementById("confirmModal");
+        const msg = document.getElementById("confirmMessage");
+        const yesBtn = document.getElementById("confirmYes");
+        const noBtn = document.getElementById("confirmNo");
+
+        msg.textContent = message;
+        modal.style.display = "flex";
+
+        yesBtn.onclick = () => {
+            modal.style.display = "none";
+            resolve(true);
+        };
+
+        noBtn.onclick = () => {
+            modal.style.display = "none";
+            resolve(false);
+        };
     });
 }
 
