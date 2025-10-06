@@ -150,7 +150,10 @@ document.getElementById("spendBtn").addEventListener("click", async () => {
             });
             showNotification(`You spent ${spendPoints} points!`);
             document.getElementById("spendAmount").value = "";
+
+            // Update points AND transaction history
             displayUserPoints(user.uid);
+            loadTransactionHistory(user.uid);
         }
     }
 });
@@ -194,7 +197,10 @@ document.getElementById("donateBtn").addEventListener("click", async () => {
 
             showNotification(`You donated ${donatePoints} points to ${charity}!`);
             document.getElementById("donateAmount").value = "";
+
+            // Update points AND transaction history
             displayUserPoints(user.uid);
+            loadTransactionHistory(user.uid);
         }
     }
 });
