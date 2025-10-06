@@ -26,7 +26,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const codePoints = { "ALU10": 10, "PLS5": 5, "GLS8": 8 };
+const codePoints = { "ALU10": 10, "PLS5": 5 };
 
 // Function to get code from URL
 function getCodeFromURL() {
@@ -35,18 +35,30 @@ function getCodeFromURL() {
 }
 
 // Update points display and progress bar
+const pointsGoalValue = 100; // <-- set your goal here
+const pointsLabel = document.getElementById("pointsLabel");
+
+// Update the displayUserPoints function
 async function displayUserPoints(uid) {
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
     const points = userSnap.exists() ? userSnap.data().points || 0 : 0;
-
-    // Update the number
     document.getElementById("pointsNumber").innerText = points;
 
-    // Update progress bar 
-    const goal = 100;
-    const progressPercent = Math.min((points / goal) * 100, 100);
-    document.getElementById("pointsProgress").style.width = progressPercent + "%";
+    // Update progress bar
+    const progressPercent = Math.min((points / pointsGoalValue) * 100, 100);
+    const progressBar = document.getElementById("pointsProgress");
+    progressBar.style.width = `${progressPercent}%`;
+
+    // Change color if goal reached
+    if (points >= pointsGoalValue) {
+        progressBar.style.background = "gold";
+    } else {
+        progressBar.style.background = "#4CAF50"; // original green
+    }
+
+    // Update label
+    pointsLabel.innerText = `${points} / ${pointsGoalValue} points toward goal`;
 }
 
 // Add points from a code in URL
@@ -149,12 +161,14 @@ async function loadTransactionHistory(uid) {
             ? data.timestamp.toDate().toLocaleString()
             : "N/A";
 
+        const beneficiary = data.type === "donate" ? data.charity : "Self";
+
         row.innerHTML = `
-            <td>${data.type || "-"}</td>
-            <td>${data.points || 0}</td>
-            <td>${data.charity || "-"}</td>
-            <td>${date}</td>
-        `;
+        <td>${data.type || "-"}</td>
+        <td>${data.points || 0}</td>
+        <td>${beneficiary}</td>
+        <td>${date}</td>
+    `;
 
         tableBody.appendChild(row);
     });
@@ -174,6 +188,7 @@ document.getElementById("toggleHistoryBtn").addEventListener("click", () => {
         content.style.display = "none";
         btn.textContent = "View Transaction History ▼";
     }
+
 });
 
 // Auth state change

@@ -171,6 +171,17 @@ body>* {
     margin-top: 20px;
 }
 
+#historyTable th,
+#historyTable td {
+    padding: 8px 12px;
+    text-align: center;
+}
+
+#historyTable th {
+    background-color: #4CAF50;
+    color: white;
+}
+
 /* --- Responsive Mobile --- */
 @media (max-width: 480px) {
 
