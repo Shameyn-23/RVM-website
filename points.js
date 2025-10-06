@@ -1,3 +1,4 @@
+// Confirmation popup
 function showConfirm(message) {
     return new Promise((resolve) => {
         const confirmed = window.confirm(message); // Simple browser confirm
@@ -66,11 +67,11 @@ function getCodeFromURL() {
     return params.get("code");
 }
 
-// Update points display and progress bar
-const pointsGoalValue = 100; // <-- set your goal here
+// Points goal
+const pointsGoalValue = 100;
 const pointsLabel = document.getElementById("pointsLabel");
 
-// Update the displayUserPoints function
+// Display user points and progress
 async function displayUserPoints(uid) {
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
@@ -83,17 +84,13 @@ async function displayUserPoints(uid) {
     progressBar.style.width = `${progressPercent}%`;
 
     // Change color if goal reached
-    if (points >= pointsGoalValue) {
-        progressBar.style.background = "gold";
-    } else {
-        progressBar.style.background = "#4CAF50"; // original green
-    }
+    progressBar.style.background = points >= pointsGoalValue ? "gold" : "#4CAF50";
 
-    // Update label
+    // Update dynamic label
     pointsLabel.innerText = `${points} / ${pointsGoalValue} points toward goal`;
 }
 
-// Add points from a code in URL
+// Add points from URL code
 async function addPointsFromCode(user) {
     const code = getCodeFromURL();
     if (!code || !codePoints[code]) return;
@@ -112,34 +109,11 @@ async function addPointsFromCode(user) {
     window.history.replaceState({}, document.title, "points.html");
 }
 
-function showConfirm(message) {
-    return new Promise((resolve) => {
-        const modal = document.getElementById("confirmModal");
-        const msg = document.getElementById("confirmMessage");
-        const yesBtn = document.getElementById("confirmYes");
-        const noBtn = document.getElementById("confirmNo");
-
-        msg.textContent = message;
-        modal.style.display = "flex";
-
-        yesBtn.onclick = () => {
-            modal.style.display = "none";
-            resolve(true);
-        };
-
-        noBtn.onclick = () => {
-            modal.style.display = "none";
-            resolve(false);
-        };
-    });
-}
-
 // Spend points
 document.getElementById("spendBtn").addEventListener("click", async () => {
     const spendPoints = parseInt(document.getElementById("spendAmount").value);
     const user = auth.currentUser;
     if (!user) return alert("Please log in first.");
-
     if (!spendPoints || spendPoints <= 0) return showNotification("Enter a valid number!");
 
     const confirmed = await showConfirm(`Are you sure you want to spend ${spendPoints} points?`);
@@ -159,7 +133,6 @@ document.getElementById("spendBtn").addEventListener("click", async () => {
                 points: spendPoints,
                 timestamp: serverTimestamp()
             });
-
             showNotification(`You spent ${spendPoints} points!`);
             document.getElementById("spendAmount").value = "";
             displayUserPoints(user.uid);
@@ -172,7 +145,6 @@ document.getElementById("donateBtn").addEventListener("click", async () => {
     const donatePoints = parseInt(document.getElementById("donateAmount").value);
     const charity = document.getElementById("charitySelect").value;
     const user = auth.currentUser;
-
     if (!user) return alert("Please log in first.");
     if (!charity) return showNotification("Select a charity!");
     if (!donatePoints || donatePoints <= 0) return showNotification("Enter a valid number!");
@@ -192,7 +164,6 @@ document.getElementById("donateBtn").addEventListener("click", async () => {
 
             const charityRef = doc(db, "charities", charity);
             const charitySnap = await getDoc(charityRef);
-
             if (charitySnap.exists()) {
                 await updateDoc(charityRef, { points: increment(donatePoints) });
             } else {
@@ -213,6 +184,7 @@ document.getElementById("donateBtn").addEventListener("click", async () => {
     }
 });
 
+// Load transaction history
 async function loadTransactionHistory(uid) {
     const transactionsRef = collection(db, "users", uid, "transactions");
     const snapshot = await getDocs(transactionsRef);
@@ -254,12 +226,12 @@ document.getElementById("toggleHistoryBtn").addEventListener("click", () => {
         content.style.display = "none";
         btn.textContent = "View Transaction History ▼";
     }
-
 });
 
-// Auth state change
+// Ensure points show on login
 onAuthStateChanged(auth, (user) => {
     if (user) {
+        // Display points immediately
         displayUserPoints(user.uid);
         addPointsFromCode(user);
     } else {
