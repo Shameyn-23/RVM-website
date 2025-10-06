@@ -33,7 +33,7 @@ submit.addEventListener("click", function (event) {
             const user = userCredential.user;
             alert("Account created for " + user.email);
 
-            // ✅ Redirect to points with QR if exists
+            // Redirect to points with QR if exists
             if (qrCode) {
                 window.location.href = `points.html?code=${qrCode}`;
             } else {

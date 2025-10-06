@@ -1,3 +1,35 @@
+function showConfirm(message) {
+    return new Promise((resolve) => {
+        const confirmed = window.confirm(message); // Simple browser confirm
+        resolve(confirmed);
+    });
+}
+
+// Custom success notification
+function showNotification(message) {
+    const notif = document.createElement('div');
+    notif.textContent = message;
+    notif.style.position = 'fixed';
+    notif.style.top = '20px';
+    notif.style.left = '50%';
+    notif.style.transform = 'translateX(-50%)';
+    notif.style.background = '#4CAF50';
+    notif.style.color = '#fff';
+    notif.style.padding = '12px 20px';
+    notif.style.borderRadius = '10px';
+    notif.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
+    notif.style.zIndex = '9999';
+    notif.style.opacity = '0';
+    notif.style.transition = 'opacity 0.3s';
+    document.body.appendChild(notif);
+
+    setTimeout(() => { notif.style.opacity = '1'; }, 10);
+    setTimeout(() => {
+        notif.style.opacity = '0';
+        setTimeout(() => notif.remove(), 300);
+    }, 2000);
+}
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 import {
@@ -80,11 +112,38 @@ async function addPointsFromCode(user) {
     window.history.replaceState({}, document.title, "points.html");
 }
 
+function showConfirm(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById("confirmModal");
+        const msg = document.getElementById("confirmMessage");
+        const yesBtn = document.getElementById("confirmYes");
+        const noBtn = document.getElementById("confirmNo");
+
+        msg.textContent = message;
+        modal.style.display = "flex";
+
+        yesBtn.onclick = () => {
+            modal.style.display = "none";
+            resolve(true);
+        };
+
+        noBtn.onclick = () => {
+            modal.style.display = "none";
+            resolve(false);
+        };
+    });
+}
+
 // Spend points
 document.getElementById("spendBtn").addEventListener("click", async () => {
     const spendPoints = parseInt(document.getElementById("spendAmount").value);
     const user = auth.currentUser;
     if (!user) return alert("Please log in first.");
+
+    if (!spendPoints || spendPoints <= 0) return showNotification("Enter a valid number!");
+
+    const confirmed = await showConfirm(`Are you sure you want to spend ${spendPoints} points?`);
+    if (!confirmed) return;
 
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
@@ -92,7 +151,7 @@ document.getElementById("spendBtn").addEventListener("click", async () => {
     if (userSnap.exists()) {
         const currentPoints = userSnap.data().points || 0;
         if (spendPoints > currentPoints) {
-            alert("You don't have enough points!");
+            showNotification("You don't have enough points!");
         } else {
             await updateDoc(userRef, { points: increment(-spendPoints) });
             await addDoc(collection(db, "users", user.uid, "transactions"), {
@@ -100,7 +159,8 @@ document.getElementById("spendBtn").addEventListener("click", async () => {
                 points: spendPoints,
                 timestamp: serverTimestamp()
             });
-            alert(`You used ${spendPoints} points for yourself!`);
+
+            showNotification(`You spent ${spendPoints} points!`);
             document.getElementById("spendAmount").value = "";
             displayUserPoints(user.uid);
         }
@@ -112,8 +172,13 @@ document.getElementById("donateBtn").addEventListener("click", async () => {
     const donatePoints = parseInt(document.getElementById("donateAmount").value);
     const charity = document.getElementById("charitySelect").value;
     const user = auth.currentUser;
+
     if (!user) return alert("Please log in first.");
-    if (!charity) return alert("Please select a charity.");
+    if (!charity) return showNotification("Select a charity!");
+    if (!donatePoints || donatePoints <= 0) return showNotification("Enter a valid number!");
+
+    const confirmed = await showConfirm(`Are you sure you want to donate ${donatePoints} points to ${charity}?`);
+    if (!confirmed) return;
 
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
@@ -121,12 +186,13 @@ document.getElementById("donateBtn").addEventListener("click", async () => {
     if (userSnap.exists()) {
         const currentPoints = userSnap.data().points || 0;
         if (donatePoints > currentPoints) {
-            alert("You don't have enough points!");
+            showNotification("You don't have enough points!");
         } else {
             await updateDoc(userRef, { points: increment(-donatePoints) });
 
             const charityRef = doc(db, "charities", charity);
             const charitySnap = await getDoc(charityRef);
+
             if (charitySnap.exists()) {
                 await updateDoc(charityRef, { points: increment(donatePoints) });
             } else {
@@ -140,7 +206,7 @@ document.getElementById("donateBtn").addEventListener("click", async () => {
                 timestamp: serverTimestamp()
             });
 
-            alert(`You donated ${donatePoints} points to ${charity}!`);
+            showNotification(`You donated ${donatePoints} points to ${charity}!`);
             document.getElementById("donateAmount").value = "";
             displayUserPoints(user.uid);
         }
