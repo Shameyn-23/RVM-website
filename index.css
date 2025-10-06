@@ -22,7 +22,7 @@ body::after {
     max-width: 400px;
     margin: 10% auto;
     padding: 2rem;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(46, 45, 45, 0.849);
     text-align: center;

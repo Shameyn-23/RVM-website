@@ -1,20 +1,28 @@
 body {
-    background-image: url(bins.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
     margin: 0;
     position: relative;
+    background-image: url("bins\ official.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-body ::before {
+body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.075);
+    background: rgba(0, 0, 0, 0.534);
     z-index: 0;
 }
+
+body>* {
+    position: relative;
+    z-index: 10;
+}
+
 
 .navbar {
     position: fixed;
@@ -24,14 +32,187 @@ body ::before {
     background-color: rgb(253, 251, 238);
     z-index: 100;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    /* keep title on left */
     align-items: center;
-    padding: 10px 20px;
-    min-height: 70px
+    padding: 12px 20px;
+    min-height: 70px;
 }
 
-body>*:not(.navbar) {
-    position: relative;
-    z-index: 10;
-    margin-top: 70px;
+/* Title stays on the left */
+.awards {
+    color: #4CAF50;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+
+/* Navbar links centered horizontally */
+.nav-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.nav-links a {
+    font-weight: bold;
+    color: rgb(23, 123, 204);
+    font-size: 18px;
+}
+
+
+/* --- Main Content --- */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 120px;
+    /* space below navbar */
+    gap: 30px;
+    width: 100%;
+}
+
+/* Page Title */
+.main-content h1 {
+    text-align: center;
+    font-size: 3rem;
+    color: #4CAF50;
+}
+
+/* --- Total Points Bubble --- */
+.total-points-bubble {
+    background: rgb(253, 251, 238);
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+}
+
+/* Points Progress Bar */
+#pointsGoal {
+    background: #cacaca;
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+#pointsProgress {
+    background: #4CAF50;
+    width: 0%;
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+/* --- Points Row (Spend/Donate) --- */
+.points-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Points Boxes */
+.points-box {
+    background: rgb(253, 251, 238);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex: 1 1 300px;
+    /* grow, shrink, min width */
+    max-width: 400px;
+}
+
+/* Inputs & Selects */
+.points-box input,
+.points-box select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.points-box input:focus,
+.points-box select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.points-box button {
+    width: 100%;
+    padding: 10px;
+    background: #4CAF50;
+    color: rgb(253, 251, 238);
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.points-box button:hover {
+    background: #81C784;
+}
+
+/* --- Transaction History --- */
+#historySection {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+/* --- Responsive Mobile --- */
+@media (max-width: 480px) {
+
+    /* Points boxes stack vertically */
+    .points-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .points-box {
+        max-width: 100%;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        padding: 12px 0;
+        min-height: auto;
+    }
+
+    .nav-links {
+        position: static;
+        transform: none;
+        gap: 15px;
+        margin-top: 8px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .awards {
+        margin-bottom: 5px;
+        text-align: center;
+    }
+
+    .main-content {
+        margin-top: 140px;
+        /* give extra space on mobile */
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .total-points-bubble {
+        width: 90%;
+    }
 }

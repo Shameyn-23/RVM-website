@@ -41,6 +41,6 @@ submit.addEventListener("click", function (event) {
             }
         })
         .catch((error) => {
-            alert("Error: " + error.message);
+            alert("Bad Credentials.: " + error.message);
         });
 });

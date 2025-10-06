@@ -5,42 +5,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Points Tracker</title>
-    <link rel="stylesheet" href="points.css">
     <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="points.css">
+
     <script type="module" src="points.js" defer></script>
 </head>
 
 <body>
     <nav class="navbar">
-        <span class="nav.nav-links">
+        <h1 class="awards">RVM Rewards</h1>
+        <span class="nav-links">
             <a href="index.html">Home</a>
             <a href="login.html">Login</a>
         </span>
     </nav>
-    <h1>Welcome to your Points Dashboard</h1>
+    <div class="main-content">
+        <!-- Page title -->
+        <h1>Welcome to your Points Dashboard</h1>
 
-    <h2>Your Points</h2>
-    <p>Total Points: <strong><span id="pointsDisplay">Loading...</span></strong></p>
-
-    <div id="pointsContainer">
-
-        <div>
-            <h3>Use Points for Yourself</h3>
-            <input type="number" id="spendAmount" placeholder="Enter points to spend">
-            <button id="spendBtn">Spend Points</button>
+        <!-- Total Points bubble (centered) -->
+        <div class="total-points-bubble">
+            🏆 Total Points: <span id="pointsNumber">0</span>
+            <div id="pointsGoal">
+                <div id="pointsProgress"></div>
+            </div>
         </div>
 
-        <div>
-            <h3>Donate Points</h3>
-            <select id="charitySelect">
-                <option value="">Select a charity</option>
-                <option value="Hope Worldwide Philippines">Hope Worldwide Philippines</option>
-                <option value="Angat Buhay Foundation">Angat Buhay Foundation</option>
-                <option value="AGrEA Foundation">AGREA Foundation</option>
+        <!-- Spend/Donate row -->
+        <div class="points-row">
+            <!-- Donate -->
+            <div class="points-box">
+                <h3>Donate Points</h3>
+                <select id="charitySelect">
+                    <option value="">Select a charity</option>
+                    <option value="Hope Worldwide Philippines">Hope Worldwide Philippines</option>
+                    <option value="Angat Buhay Foundation">Angat Buhay Foundation</option>
+                    <option value="AGrEA Foundation">AGREA Foundation</option>
+                </select>
+                <input type="number" id="donateAmount" placeholder="Points to donate">
+                <button id="donateBtn">Donate Points</button>
+            </div>
 
-            </select>
-            <input type="number" id="donateAmount" placeholder="Points to donate">
-            <button id="donateBtn">Donate Points</button>
+            <!-- Spend -->
+            <div class="points-box">
+                <h3>Use Points for Yourself</h3>
+                <input type="number" id="spendAmount" placeholder="Enter points to spend">
+                <button id="spendBtn">Spend Points</button>
+            </div>
+        </div>
+
+        <!-- Transaction history -->
+        <div id="historySection">
+            <button id="toggleHistoryBtn">View Transaction History ▼</button>
+            <div id="historyContent" style="display: none;">
+                <table id="historyTable" border="1" cellpadding="8">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Points</th>
+                            <th>Charity</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>

@@ -50,7 +50,7 @@ submit.addEventListener("click", function (event) {
             }
         })
         .catch((error) => {
-            alert("Account Not Found." + error.message);
+            alert("Bad Credentials." + error.message);
         });
 });
 
