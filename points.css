@@ -1,0 +1,37 @@
+body {
+    background-image: url(bins.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+}
+
+body ::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.075);
+    z-index: 0;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(253, 251, 238);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    min-height: 70px
+}
+
+body>*:not(.navbar) {
+    position: relative;
+    z-index: 10;
+    margin-top: 70px;
+}

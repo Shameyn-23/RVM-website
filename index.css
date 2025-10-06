@@ -1,18 +1,18 @@
-.body {
-    background-image: url("recycle.jpg");
+body {
+    background-image: url("recycle.jpeg");
     background-size: cover;
-    position: relative;
-    min-height: 100vh;
-    margin: 0;
     background-position: center;
     background-repeat: no-repeat;
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
 }
 
-.body::after {
+body::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(275, 275, 275, 0.7);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 0;
 }
 
@@ -20,11 +20,19 @@
     position: relative;
     z-index: 1;
     max-width: 400px;
-    width: 90%;
-    background: var(--card-bg);
+    margin: 10% auto;
     padding: 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 15px var(--shadow-light);
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(46, 45, 45, 0.849);
     text-align: center;
+}
 
+/*for mobile*/
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        margin: 25% auto;
+        padding: 1.5rem;
+    }
 }

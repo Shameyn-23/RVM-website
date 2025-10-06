@@ -5,20 +5,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account</title>
+    <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="createaccount.css">
-    <link rel="stylesheet" href="base design for pages.css">
     <script type="module" src="register-createaccount.js" defer></script>
 </head>
 
 <body>
-    <label for="email">Email</label>
-    <input type="email" placeholder="email or phone" id="email" required>
-    <input type="password" placeholder="Password" id="password" required>
-    <button id="submit" type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="login.html">Login</a></p>
+    <nav class="navbar">
+        <h2> <span class="awards">RVM Awards</span></h2>
+        <div class="nav-links">
+            <a href="index.html">
+                <p> <span class="home">Home</span></p>
+            </a>
+            <a href="login.html">
+                <p> <span class="login">Login</span></p>
+            </a>
+        </div>
+    </nav>
 
 
+    <div class="createaccount-box">
+        <h1> <span class="createaccount_title">Create Account</span></h1>
+        <form action="points.html" method="get">
+            <div class="createacctinfo">
+                <label for="email">Email</label>
+                <input type="email" placeholder="Email" id="email" required>
+
+                <label for="password">Password</label>
+                <input type="password" placeholder="Password" id="password" required>
+
+                <button id="submit" type="submit">Sign Up</button>
+            </div>
+
+        </form>
+
+        <p> <span class="Already">
+                Already have an account?
+                <a href="login.html">Login</a>
+            </span>
+        </p>
+    </div>
 </body>
 
 </html>

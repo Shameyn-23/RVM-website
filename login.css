@@ -1,0 +1,111 @@
+body {
+    background-image: url(login-background.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.541);
+    z-index: 0;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(253, 251, 238);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    min-height: 70px
+}
+
+body>*:not(.navbar) {
+    position: relative;
+    z-index: 10;
+    margin-top: 70px;
+}
+
+.nav-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.home,
+.createaccount {
+    font-weight: bold;
+    color: rgb(23, 123, 204);
+    font-size: 18px;
+}
+
+.navbar h2 {
+    margin: 0;
+    font-size: 32px;
+    line-height: 1;
+}
+
+.login_title,
+.H3 {
+    color: #4CAF50;
+    font-weight: bold;
+
+}
+
+.logininfo {
+    color: #4CAF50;
+    font-size: 18px;
+}
+
+.donthaveaccount {
+    color: #F5F9F1;
+    font-weight: lighter;
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.donthaveaccount a {
+    font-weight: bold;
+}
+
+/*for mobile*/
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+        padding: 12px 0;
+        min-height: auto;
+    }
+
+    .navbar h2 {
+        margin-bottom: 8px;
+        font-size: 22px;
+    }
+
+    .nav-links {
+        position: static;
+        transform: none;
+        gap: 15px;
+        margin-top: 5px;
+    }
+
+    .login-box {
+        width: 90%;
+        padding: 20px;
+        margin: 100px auto 0;
+    }
+}
