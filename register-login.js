@@ -39,8 +39,15 @@ submit.addEventListener("click", function (event) {
             const user = userCredential.user;
             alert("Account Signed In For " + user.email);
 
-            // Redirect to points page, code will be read from localStorage
-            window.location.href = "points.html";
+            // Redirect with QR code if it exists
+            const pendingCode = localStorage.getItem("pendingCode");
+
+            if (pendingCode) {
+                window.location.href = `points.html?code=${pendingCode}`;
+                localStorage.removeItem("pendingCode");
+            } else {
+                window.location.href = "points.html";
+            }
         })
         .catch((error) => {
             alert("Account Not Found." + error.message);

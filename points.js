@@ -112,10 +112,14 @@ document.getElementById("donateBtn").addEventListener("click", async () => {
 });
 
 onAuthStateChanged(auth, (user) => {
+    const code = getCodeFromURL();
+
     if (user) {
         displayUserPoints(user.uid);
         addPointsFromCode(user);
     } else {
-        window.location.href = "login.html";
+        // Keep the ?code=... when redirecting
+        const redirectURL = code ? `login.html?code=${code}` : "login.html";
+        window.location.href = redirectURL;
     }
 });
