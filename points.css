@@ -171,15 +171,48 @@ body>* {
     margin-top: 20px;
 }
 
-#historyTable th,
-#historyTable td {
-    padding: 8px 12px;
-    text-align: center;
+#historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: rgba(253, 251, 238, 0.95);
+    /* light bubble background */
+    border-radius: 10px;
+    overflow: hidden;
 }
 
+#historyTable th,
+#historyTable td {
+    padding: 10px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Header colors */
 #historyTable th {
     background-color: #4CAF50;
-    color: white;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Row colors */
+#historyTable tbody tr:nth-child(even) {
+    background-color: rgba(200, 200, 200, 0.2);
+    /* subtle stripe */
+}
+
+#historyTable tbody tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#historyTable td {
+    color: #2E3D2F;
+    /* text color for data */
+}
+
+#historyTable tbody tr:hover {
+    background-color: rgba(76, 175, 80, 0.3);
+    /* light green highlight */
 }
 
 /* --- Responsive Mobile --- */
