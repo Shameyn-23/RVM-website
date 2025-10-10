@@ -65,7 +65,26 @@ document.getElementById('submit').addEventListener("click", (event) => {
             const user = userCredential.user;
             showNotification(`Account created for ${user.email}`, "success");
 
-            window.location.href = `${redirect}${qrCode ? `?code=${qrCode}` : ""}`;
+            // Correct redirection that handles both direct QR and redirect-based QR
+            let finalCode = null;
+
+            // Check if ?code= is directly in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get("code")) {
+                finalCode = urlParams.get("code");
+            }
+
+            // If code isn't found but ?redirect= exists, extract the code from there
+            if (!finalCode && urlParams.get("redirect") && urlParams.get("code")) {
+                finalCode = urlParams.get("code");
+            }
+
+            // Redirect correctly after signup
+            if (finalCode) {
+                window.location.href = `points.html?code=${finalCode}`;
+            } else {
+                window.location.href = "points.html";
+            }
         })
         .catch((error) => {
             setTimeout(() => {
