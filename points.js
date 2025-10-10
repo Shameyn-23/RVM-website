@@ -74,7 +74,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const codePoints = { "ALU10": 10, "PLS5": 5 };
+const codePoints = { "ALU3": 3, "PLS2": 2 };
 
 // Function to get code from URL
 function getCodeFromURL() {
@@ -252,9 +252,13 @@ document.getElementById("toggleHistoryBtn").addEventListener("click", () => {
 // Ensure points show on login
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // Display points immediately
-        displayUserPoints(user.uid);
-        addPointsFromCode(user);
+
+        // Small delay ensures Firestore user doc is ready after signup
+        setTimeout(() => {
+            displayUserPoints(user.uid);
+            addPointsFromCode(user);
+        }, 500);
+
     } else {
         const code = getCodeFromURL();
         const redirectURL = code ? `login.html?code=${code}` : "login.html";
