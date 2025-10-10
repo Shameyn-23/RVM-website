@@ -43,8 +43,15 @@ function showNotification(message, type = "success") {
 
 // Get redirect & code params
 const urlParams = new URLSearchParams(window.location.search);
-const qrCode = urlParams.get("code");
-const redirect = urlParams.get("redirect") || "points.html";
+let qrCode = urlParams.get("code");
+
+// If code isn't directly found but redirect exists, extract it
+if (!qrCode) {
+    const redirect = urlParams.get("redirect");
+    if (redirect && urlParams.get("code")) {
+        qrCode = urlParams.get("code");
+    }
+}
 
 // Submit button event
 document.getElementById('submit').addEventListener("click", (event) => {
