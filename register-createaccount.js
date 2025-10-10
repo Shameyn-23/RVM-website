@@ -41,17 +41,10 @@ function showNotification(message, type = "success") {
     }, 2000);
 }
 
-// Get redirect & code params
+// Parse URL for redirect + code
 const urlParams = new URLSearchParams(window.location.search);
-let qrCode = urlParams.get("code");
-
-// If code isn't directly found but redirect exists, extract it
-if (!qrCode) {
-    const redirect = urlParams.get("redirect");
-    if (redirect && urlParams.get("code")) {
-        qrCode = urlParams.get("code");
-    }
-}
+const redirectPage = urlParams.get("redirect") || "points.html"; // fallback if none
+const qrCode = urlParams.get("code"); // always available in your QR links
 
 // Submit button event
 document.getElementById('submit').addEventListener("click", (event) => {
@@ -65,26 +58,14 @@ document.getElementById('submit').addEventListener("click", (event) => {
             const user = userCredential.user;
             showNotification(`Account created for ${user.email}`, "success");
 
-            // Correct redirection that handles both direct QR and redirect-based QR
-            let finalCode = null;
-
-            // Check if ?code= is directly in the URL
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get("code")) {
-                finalCode = urlParams.get("code");
+            // Build redirect URL
+            let finalURL = redirectPage;
+            if (qrCode) {
+                // Ensure ?code= is attached correctly
+                finalURL += finalURL.includes("?") ? `&code=${qrCode}` : `?code=${qrCode}`;
             }
 
-            // If code isn't found but ?redirect= exists, extract the code from there
-            if (!finalCode && urlParams.get("redirect") && urlParams.get("code")) {
-                finalCode = urlParams.get("code");
-            }
-
-            // Redirect correctly after signup
-            if (finalCode) {
-                window.location.href = `points.html?code=${finalCode}`;
-            } else {
-                window.location.href = "points.html";
-            }
+            window.location.href = finalURL;
         })
         .catch((error) => {
             setTimeout(() => {
