@@ -120,9 +120,15 @@ async function addPointsFromCode(user) {
         await setDoc(userRef, { points: pointsToAdd });
     }
 
+    // ✅ Display updated points immediately
     displayUserPoints(user.uid);
-    window.history.replaceState({}, document.title, "points.html");
+
+    // ✅ Wait a moment BEFORE wiping the URL
+    setTimeout(() => {
+        window.history.replaceState({}, document.title, "points.html");
+    }, 1000); // Give Firebase time to finish
 }
+
 
 // Spend points
 document.getElementById("spendBtn").addEventListener("click", async () => {
@@ -261,6 +267,7 @@ onAuthStateChanged(auth, (user) => {
 
     } else {
         const code = getCodeFromURL();
+        console.log("Detected code on points.html:", code);
         const redirectURL = code
             ? `login.html?redirect=points.html&code=${code}`
             : "login.html?redirect=points.html";
