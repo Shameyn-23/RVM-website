@@ -41,16 +41,16 @@ function showNotification(message, type = "success") {
     }, 2000);
 }
 
-// Get any QR code value from the URL (e.g., ?code=ALU10)
+// Get redirect & QR code values
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
+const redirect = params.get("redirect") || "points.html";
 if (code) {
     localStorage.setItem("pendingCode", code);
 }
 
 // Submit button event
-const submit = document.getElementById('submit');
-submit.addEventListener("click", function (event) {
+document.getElementById('submit').addEventListener("click", (event) => {
     event.preventDefault();
 
     const email = document.getElementById('email').value;
@@ -61,14 +61,9 @@ submit.addEventListener("click", function (event) {
             const user = userCredential.user;
             showNotification(`Successfully signed in as ${user.email}`, "success");
 
-            // Redirect with QR code if it exists
             const pendingCode = localStorage.getItem("pendingCode");
-            if (pendingCode) {
-                window.location.href = `points.html?code=${pendingCode}`;
-                localStorage.removeItem("pendingCode");
-            } else {
-                window.location.href = "points.html";
-            }
+            window.location.href = `${redirect}${pendingCode ? `?code=${pendingCode}` : ""}`;
+            localStorage.removeItem("pendingCode");
         })
         .catch((error) => {
             showNotification(`Login failed: ${error.message}`, "error");

@@ -41,13 +41,13 @@ function showNotification(message, type = "success") {
     }, 2000);
 }
 
-// Get QR code value if exists in URL
+// Get redirect & code params
 const urlParams = new URLSearchParams(window.location.search);
 const qrCode = urlParams.get("code");
+const redirect = urlParams.get("redirect") || "points.html";
 
 // Submit button event
-const submit = document.getElementById('submit');
-submit.addEventListener("click", function (event) {
+document.getElementById('submit').addEventListener("click", (event) => {
     event.preventDefault();
 
     const email = document.getElementById('email').value;
@@ -58,17 +58,11 @@ submit.addEventListener("click", function (event) {
             const user = userCredential.user;
             showNotification(`Account created for ${user.email}`, "success");
 
-            // Redirect to points with QR if exists
-            if (qrCode) {
-                window.location.href = `points.html?code=${qrCode}`;
-            } else {
-                window.location.href = "points.html";
-            }
+            window.location.href = `${redirect}${qrCode ? `?code=${qrCode}` : ""}`;
         })
         .catch((error) => {
-            // Always force the notification to appear
             setTimeout(() => {
                 showNotification(`Sign up failed: ${error.message}`, "error");
             }, 10);
         });
-})
+});

@@ -261,7 +261,9 @@ onAuthStateChanged(auth, (user) => {
 
     } else {
         const code = getCodeFromURL();
-        const redirectURL = code ? `login.html?code=${code}` : "login.html";
+        const redirectURL = code
+            ? `login.html?redirect=points.html&code=${code}`
+            : "login.html?redirect=points.html";
         window.location.href = redirectURL;
     }
 });
