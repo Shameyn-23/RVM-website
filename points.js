@@ -102,12 +102,21 @@ async function displayUserPoints(uid) {
     progressBar.style.background = points >= pointsGoalValue ? "gold" : "#4CAF50";
 
     // Update dynamic label
-    pointsLabel.innerText = `${points} / ${pointsGoalValue} points toward goal`;
+    if (pointsLabel) {
+        pointsLabel.innerText = `${points} / ${pointsGoalValue} points toward goal`;
+    }
 }
 
-// Add points from URL code
+// Add points from URL code or pending localStorage code
 async function addPointsFromCode(user) {
-    const code = getCodeFromURL();
+    // Try URL first, then fallback to pendingCode from localStorage
+    let code = getCodeFromURL();
+    if (!code) {
+        code = localStorage.getItem("pendingCode");
+    }
+
+    console.log("addPointsFromCode - code:", code);
+
     if (!code || !codePoints[code]) return;
 
     const pointsToAdd = codePoints[code];
@@ -120,15 +129,21 @@ async function addPointsFromCode(user) {
         await setDoc(userRef, { points: pointsToAdd });
     }
 
-    // ✅ Display updated points immediately
+    // Update display
     displayUserPoints(user.uid);
 
-    // ✅ Wait a moment BEFORE wiping the URL
-    setTimeout(() => {
-        window.history.replaceState({}, document.title, "points.html");
-    }, 1000); // Give Firebase time to finish
-}
+    // Clear pendingCode so we don't reapply on refresh
+    localStorage.removeItem("pendingCode");
 
+    // Clean the URL (give it a small delay so the DB update can settle)
+    setTimeout(() => {
+        try {
+            window.history.replaceState({}, document.title, "points.html");
+        } catch (e) {
+            console.warn("replaceState failed:", e);
+        }
+    }, 800);
+}
 
 // Spend points
 document.getElementById("spendBtn").addEventListener("click", async () => {
@@ -216,6 +231,7 @@ async function loadTransactionHistory(uid) {
     const transactionsRef = collection(db, "users", uid, "transactions");
     const snapshot = await getDocs(transactionsRef);
     const tableBody = document.getElementById("historyTableBody");
+    if (!tableBody) return;
     tableBody.innerHTML = "";
 
     snapshot.forEach((docSnap) => {
@@ -257,20 +273,22 @@ document.getElementById("toggleHistoryBtn").addEventListener("click", () => {
 
 // Ensure points show on login
 onAuthStateChanged(auth, (user) => {
-    if (user) {
+    const codeInURL = getCodeFromURL();
 
+    if (user) {
         // Small delay ensures Firestore user doc is ready after signup
         setTimeout(() => {
             displayUserPoints(user.uid);
             addPointsFromCode(user);
         }, 500);
-
     } else {
-        const code = getCodeFromURL();
-        console.log("Detected code on points.html:", code);
-        const redirectURL = code
-            ? `login.html?redirect=points.html&code=${code}`
-            : "login.html?redirect=points.html";
+        // If a code exists in the URL, persist it so it won't be lost during redirect/login
+        if (codeInURL) {
+            localStorage.setItem("pendingCode", codeInURL);
+        }
+
+        // Redirect to login (the login handler will read pendingCode and continue)
+        const redirectURL = "login.html?redirect=points.html";
         window.location.href = redirectURL;
     }
 });
